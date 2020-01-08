@@ -1,10 +1,40 @@
 import React, { Component } from 'react';
 import { Icon, Button, Form, Checkbox, Divider } from 'semantic-ui-react';
 import '../assets/mystyle.css';
-// import HeaderFooter from '../hoc/HeaderFooter';
+import {connect} from 'react-redux';
+import * as actions from '../store/actions/action';
 
 class EditEmployee extends Component
 {
+    constructor(props)
+    {   super(props);
+        this.state= 
+        {
+            user:{
+            name: '',
+            age: '',
+            salary: ''
+        }
+        }
+    }
+
+    update = (key, value) =>
+    {
+        let user1 = {...this.state.user};
+        user1[key] = value;
+         this.setState({user: user1})
+    } 
+
+    updateEmp()
+    {
+        let id = this.props.match.params.id;
+        console.log('id is:', id);
+        this.props.updateData1 (id,this.state.user )
+        console.log('updated state is:', this.state);
+
+        
+    }
+
     render()
     {
         return(
@@ -20,21 +50,21 @@ class EditEmployee extends Component
                     <Form>
                         <Form.Field  className="padding-top-10px" >
                             <label>Update your Name</label>
-                            <input placeholder='My Name is...' />
+                            <input onChange ={ event => this.update("name", event.target.value) } placeholder='My Name is...' />
                         </Form.Field>
                         <Form.Field  className="padding-top-10px">
                             <label>Update your Age</label>
-                            <input placeholder='My Age is...' />
+                            <input onChange ={ event => this.update("age", event.target.value) } placeholder='My Age is...' />
                         </Form.Field>
                         <Form.Field className="padding-top-10px">
                             <label>Update your Salary</label>
-                            <input placeholder='My salary is...' />
+                            <input onChange ={ event => this.update("salary", event.target.value) } placeholder='My salary is...' />
                         </Form.Field>
                         <Form.Field className="padding-top-10px">
                             <Checkbox label='The above data filled by me is updated' />
                         </Form.Field>
                         <div className="padding-top-20px">
-                            <Button fluid content='Update My Details!!' secondary />
+                            <Button onClick = { () => this.updateEmp() } fluid content='Update My Details!!' secondary  />
                         </div>
                     </Form>
                 </div>
@@ -44,4 +74,16 @@ class EditEmployee extends Component
     }
 }
 
-export default EditEmployee;
+const mapStateToProps = (state) => {
+    return {
+        employee: state.employee.updateData
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        updateData1: (id,user) => dispatch(actions.updateData(id,user))
+    };
+};
+
+export default connect (mapStateToProps, mapDispatchToProps) (EditEmployee);

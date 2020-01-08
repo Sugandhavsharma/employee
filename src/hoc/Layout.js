@@ -13,9 +13,10 @@ class Layout extends Component
     { 
         return (  
             <Router path= "/" history = { browserHistory } >
+                <Route path = "/" exact component = {EmployeeList} />
                 <Route path = "/AddEmployee" component = {AddEmployee} />
-                <Route path = "/EditEmployee" component = {EditEmployee} />
-                <Route path = "/EmployeeList" component = {EmployeeList} />
+                <Route path = "/EditEmployee/:id" component = {EditEmployee} />
+                
         </Router>
         )
     }

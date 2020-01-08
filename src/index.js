@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-// import { Router, Route, Switch } from 'react-router-dom';
-// import {createBrowserHistory} from 'history';
-// import AddEmployee from './components/AddEmployee';
-// import EditEmployee from './components/EditEmployee';
-// import EmployeeList from './components/EmployeeList';
+import getReducer from './store/reducers/reducer';
+import {Provider} from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { BrowserRouter } from 'react-router-dom';
+import thunk from 'redux-thunk';
+
+const store = createStore(getReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
-    // <Router history = {createBrowserHistory()}>
-    //         <Switch>
-    //             <Route path='/AddEmployee' exact component={AddEmployee}/>
-    //             <Route path='/EditEmployee' exact component={EditEmployee}/>
-    //             <Route path='/EmployeeList' exact component={EmployeeList}/>
-    //         </Switch>
-    // </Router>,
-    <App/>,
+    <Provider store = {store}>
+        <BrowserRouter>
+        <App/>
+        </BrowserRouter>    
+    </Provider>,
     document.getElementById( 'root' )
-)
+);
+
